@@ -1,0 +1,36 @@
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster. --> calico
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.56.104:6443 --token h1jfry.d9x5spemp8bhltys \
+	--discovery-token-ca-cert-hash sha256:7a1ba2a88cb6b630ef375f8ba5902555adae3cffd51ee57724eac4a715e6a732
+
+==========================================
+
+swapoff -a
+
+kubeadm init --apiserver-advertise-address=192.168.56.104 --pod-network-cidr=192.168.0.0/16
+
+
+kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+kubectl get pods –all-namespaces
+
+ kubectl get nodes
+
+kubectl describe nodes kmaster
+
+kubectl version
